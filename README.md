@@ -33,7 +33,7 @@ The LLM is the reasoning engine. The repository, AST, dependency graph, compiler
 ├────────────────────────────────────────────────────────┤
 │  Tree-sitter │ NetworkX │ FAISS │ SQLite │ Subprocess  │
 ├────────────────────────────────────────────────────────┤
-│              Ollama (qwen2.5-coder:7b)                 │
+│              Ollama (qwen5-coder:.5b)                 │
 └────────────────────────────────────────────────────────┘
 ```
 

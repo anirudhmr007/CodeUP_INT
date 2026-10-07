@@ -3,44 +3,44 @@
 @tailwind utilities;
 
 @layer components {
-  /* Antigravity Glassmorphism Panels */
+  /* Clean Light Antigravity Glassmorphism Panels */
   .panel {
-    @apply relative bg-slate-900/65 backdrop-blur-xl border border-white/[0.08] rounded-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.45)] overflow-hidden flex flex-col transition-all duration-300;
+    @apply relative bg-white/85 backdrop-blur-xl border border-slate-200/90 rounded-xl shadow-[0_4px_25px_-4px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col transition-all duration-300;
   }
   
   .panel::before {
     content: '';
-    @apply pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent;
+    @apply pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent;
   }
 
   .panel:hover {
-    @apply border-cyan-500/25 shadow-[0_12px_40px_0_rgba(8,145,178,0.12)];
+    @apply border-cyan-400/50 shadow-[0_8px_30px_-4px_rgba(6,182,212,0.15)];
   }
 
   .panel-header {
-    @apply px-4 py-3 bg-slate-950/60 border-b border-white/[0.06] font-semibold text-gray-200 flex items-center justify-between backdrop-blur-md;
+    @apply px-4 py-3 bg-slate-50/80 border-b border-slate-200 text-slate-800 font-semibold flex items-center justify-between backdrop-blur-md;
   }
 
   .panel-content {
-    @apply flex-1 overflow-auto p-4;
+    @apply flex-1 overflow-auto p-4 text-slate-700;
   }
 
-  /* Antigravity Neon Glows */
+  /* Antigravity Neon Glows for Light Theme */
   .glow-cyan {
-    box-shadow: 0 0 20px -3px rgba(6, 182, 212, 0.45);
+    box-shadow: 0 0 18px -2px rgba(6, 182, 212, 0.35);
   }
   
   .glow-violet {
-    box-shadow: 0 0 20px -3px rgba(168, 85, 247, 0.45);
+    box-shadow: 0 0 18px -2px rgba(147, 51, 234, 0.3);
   }
 
   .glow-emerald {
-    box-shadow: 0 0 20px -3px rgba(16, 185, 129, 0.45);
+    box-shadow: 0 0 18px -2px rgba(16, 185, 129, 0.35);
   }
 
   /* Antigravity Text Gradient */
   .text-gradient-antigravity {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 via-sky-600 to-indigo-600;
   }
 
   /* Floating Animation */
@@ -49,24 +49,24 @@
   }
 }
 
-/* Custom Scrollbar for Antigravity theme */
+/* Custom Scrollbar for Light Antigravity theme */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(3, 7, 18, 0.6);
+  background: rgba(241, 245, 249, 0.8);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(56, 189, 248, 0.2);
+  background: rgba(148, 163, 184, 0.5);
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(56, 189, 248, 0.4);
+  background: rgba(100, 116, 139, 0.7);
 }
 
 /* Keyframes */
@@ -75,17 +75,17 @@
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-6px);
+    transform: translateY(-5px);
   }
 }
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4), 0 0 30px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.35), 0 0 25px rgba(99, 102, 241, 0.2);
     transform: translateY(0px);
   }
   50% {
-    box-shadow: 0 0 25px rgba(6, 182, 212, 0.7), 0 0 45px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.6), 0 0 35px rgba(99, 102, 241, 0.35);
     transform: translateY(-1px);
   }
 }

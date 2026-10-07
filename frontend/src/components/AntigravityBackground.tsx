@@ -15,7 +15,7 @@ interface Particle {
 
 export default function AntigravityBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouseRef = useRef({ x: -1000, y: -1000, radius: 140 });
+  const mouseRef = useRef({ x: -1000, y: -1000, radius: 150 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -49,20 +49,20 @@ export default function AntigravityBackground() {
     window.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseleave', handleMouseLeave);
 
-    // Color palette inspired by antigravity.google
+    // Color palette tuned for high-tech clean Light Mode
     const colors = [
-      'rgba(56, 189, 248, ', // Electric Cyan / Sky
-      'rgba(168, 85, 247, ', // Deep Violet
-      'rgba(99, 102, 241, ', // Quantum Indigo
-      'rgba(52, 211, 153, ', // Ethereal Emerald
+      'rgba(2, 132, 199, ',   // Deep Cyan / Sky
+      'rgba(99, 102, 241, ',  // Indigo
+      'rgba(147, 51, 234, ',  // Violet
+      'rgba(100, 116, 139, ', // Slate Muted
     ];
 
     let particles: Particle[] = [];
 
     const initParticles = () => {
       particles = [];
-      const density = Math.floor((width * height) / 14000); // responsive particle count
-      const count = Math.min(Math.max(density, 60), 140);
+      const density = Math.floor((width * height) / 15000);
+      const count = Math.min(Math.max(density, 50), 110);
 
       for (let i = 0; i < count; i++) {
         const x = Math.random() * width;
@@ -72,11 +72,11 @@ export default function AntigravityBackground() {
           y,
           baseX: x,
           baseY: y,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4 - 0.1, // subtle upward antigravity buoyancy
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35 - 0.08,
           size: Math.random() * 2 + 1,
           color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: Math.random() * 0.5 + 0.2,
+          alpha: Math.random() * 0.35 + 0.15,
           mass: Math.random() * 1.5 + 0.5,
         });
       }
@@ -92,21 +92,18 @@ export default function AntigravityBackground() {
       const my = mouseRef.current.y;
       const mRadius = mouseRef.current.radius;
 
-      // Update & Draw particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
 
-        // Zero-gravity continuous float
         p.x += p.vx;
         p.y += p.vy;
 
-        // Wrap around boundaries
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
-        // Gravitational warp / antigravity deflection from cursor
+        // Gravitational warp / deflection from cursor
         const dx = mx - p.x;
         const dy = my - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -116,17 +113,14 @@ export default function AntigravityBackground() {
           const forceDirectionX = dx / dist;
           const forceDirectionY = dy / dist;
 
-          // Antigravity repels particles gently outwards with inertia
-          p.x -= forceDirectionX * force * 4 * p.mass;
-          p.y -= forceDirectionY * force * 4 * p.mass;
+          p.x -= forceDirectionX * force * 3.5 * p.mass;
+          p.y -= forceDirectionY * force * 3.5 * p.mass;
         }
 
         // Render particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = `${p.color}${p.alpha})`;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = `${p.color}0.8)`;
         ctx.fill();
 
         // Connect nearby particles with subtle quantum filaments
@@ -134,12 +128,12 @@ export default function AntigravityBackground() {
           const p2 = particles[j];
           const distNodes = Math.hypot(p.x - p2.x, p.y - p2.y);
           if (distNodes < 110) {
-            const lineAlpha = (1 - distNodes / 110) * 0.15;
+            const lineAlpha = (1 - distNodes / 110) * 0.12;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(147, 197, 253, ${lineAlpha})`;
-            ctx.lineWidth = 0.7;
+            ctx.strokeStyle = `rgba(100, 116, 139, ${lineAlpha})`;
+            ctx.lineWidth = 0.6;
             ctx.stroke();
           }
         }
@@ -159,17 +153,17 @@ export default function AntigravityBackground() {
   }, []);
 
   return (
-    <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
+    <div className="pointer-events-none fixed inset-0 overflow-hidden z-0 bg-[#f8fafc]">
       {/* Dynamic interactive canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full opacity-70" />
+      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full opacity-80" />
 
-      {/* Atmospheric ambient cosmic nebulae */}
-      <div className="absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-cyan-600/10 blur-[140px] animate-pulse duration-10000" />
-      <div className="absolute top-1/3 -right-40 h-[650px] w-[650px] rounded-full bg-violet-600/10 blur-[160px] animate-pulse duration-7000" />
-      <div className="absolute -bottom-40 left-1/3 h-[500px] w-[500px] rounded-full bg-indigo-600/10 blur-[130px] animate-pulse duration-9000" />
+      {/* Atmospheric soft pastel light nebulae */}
+      <div className="absolute -top-32 -left-32 h-[550px] w-[550px] rounded-full bg-sky-200/40 blur-[130px]" />
+      <div className="absolute top-1/4 -right-32 h-[600px] w-[600px] rounded-full bg-purple-200/35 blur-[150px]" />
+      <div className="absolute -bottom-32 left-1/3 h-[500px] w-[500px] rounded-full bg-indigo-100/40 blur-[130px]" />
 
-      {/* Subtle Antigravity orbital lines overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b08_1px,transparent_1px),linear-gradient(to_bottom,#1e293b08_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40" />
+      {/* Subtle modern engineering grid texture */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#cbd5e115_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e115_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_80%,transparent_100%)] opacity-70" />
     </div>
   );
 }

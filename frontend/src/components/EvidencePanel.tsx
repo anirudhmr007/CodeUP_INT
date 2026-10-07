@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Search, AlertTriangle, FileText, Code2, ListTree, Bug, Flame, ShieldCheck, Sparkles } from 'lucide-react';
+import { Search, AlertTriangle, FileText, Code2, ListTree, Bug, Flame, ShieldCheck, Sparkles, FolderGit2 } from 'lucide-react';
 import { EvidenceType, EvidenceRecord } from '../types';
 import { useStore } from '../hooks/useStore';
 import { api } from '../services/api';
@@ -35,7 +35,7 @@ const defaultMockEvidence: EvidenceRecord[] = [
 ];
 
 export default function EvidencePanel() {
-  const { currentTaskId } = useStore();
+  const { currentTaskId, currentRepo } = useStore();
   const [evidenceList, setEvidenceList] = useState<EvidenceRecord[]>(defaultMockEvidence);
 
   useEffect(() => {
@@ -53,89 +53,105 @@ export default function EvidencePanel() {
       case EvidenceType.CODE_REFERENCE:
       case 'CODE_REFERENCE':
       case 'ast':
-        return <Code2 className="w-4 h-4 text-cyan-400" />;
+        return <Code2 className="w-4 h-4 text-cyan-600" />;
       case EvidenceType.LOG_OUTPUT:
       case 'LOG_OUTPUT':
       case 'runtime':
-        return <AlertTriangle className="w-4 h-4 text-amber-400" />;
+        return <AlertTriangle className="w-4 h-4 text-amber-600" />;
       case EvidenceType.TEST_RESULT:
       case 'TEST_RESULT':
       case 'test':
-        return <ListTree className="w-4 h-4 text-emerald-400" />;
+        return <ListTree className="w-4 h-4 text-emerald-600" />;
       default:
-        return <FileText className="w-4 h-4 text-purple-400" />;
+        return <FileText className="w-4 h-4 text-purple-600" />;
     }
   };
 
+  if (!currentRepo) {
+    return (
+      <div className="h-full flex flex-col items-center justify-center p-6 text-center bg-slate-50/50">
+        <div className="w-12 h-12 rounded-xl bg-cyan-50 border border-cyan-200 flex items-center justify-center mb-3">
+          <FolderGit2 className="w-6 h-6 text-cyan-600" />
+        </div>
+        <h3 className="text-xs font-mono font-bold text-slate-800 mb-1">
+          Awaiting Repository Analysis
+        </h3>
+        <p className="text-[11px] font-mono text-slate-500 max-w-xs leading-relaxed">
+          Connect and analyze a repository in the left panel to populate verified AST symbol evidence and dependency records.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="h-full flex flex-col p-4 bg-slate-950/60 overflow-y-auto font-sans">
+    <div className="h-full flex flex-col p-4 bg-slate-50/50 overflow-y-auto font-sans">
       
       {/* Root Cause & Fix Strategy Cards */}
-      <div className="mb-5 grid grid-cols-1 md:grid-cols-2 gap-3.5 shrink-0">
-        <div className="bg-slate-900/80 border border-white/[0.08] rounded-xl p-3.5 shadow-lg relative overflow-hidden backdrop-blur-md hover:border-cyan-500/30 transition-all">
-          <div className="flex items-center gap-2 mb-2">
-            <Bug className="w-4 h-4 text-rose-400" />
-            <h3 className="font-mono text-xs uppercase tracking-wider font-bold text-gray-200">
+      <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-3 shrink-0">
+        <div className="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs hover:border-cyan-400 transition-all">
+          <div className="flex items-center gap-2 mb-1.5">
+            <Bug className="w-4 h-4 text-rose-500" />
+            <h3 className="font-mono text-xs uppercase tracking-wider font-bold text-slate-800">
               Root Cause Grounding
             </h3>
           </div>
-          <p className="text-xs font-mono text-gray-300 leading-relaxed">
-            The <code className="text-cyan-300 bg-slate-950 px-1 py-0.5 rounded border border-cyan-500/20">divide(a, b)</code> function performs unconditional division <code className="text-cyan-300 bg-slate-950 px-1 py-0.5 rounded">a / b</code> without checking if <code className="text-purple-300 font-bold">b == 0</code>, resulting in an unhandled ZeroDivisionError.
+          <p className="text-xs font-mono text-slate-600 leading-relaxed">
+            The <code className="text-cyan-700 bg-cyan-50 px-1 py-0.5 rounded border border-cyan-200 font-semibold">divide(a, b)</code> function performs unconditional division <code className="text-cyan-700 bg-cyan-50 px-1 py-0.5 rounded">a / b</code> without checking if <code className="text-purple-700 font-bold">b == 0</code>, resulting in an unhandled ZeroDivisionError.
           </p>
         </div>
         
-        <div className="bg-slate-900/80 border border-white/[0.08] rounded-xl p-3.5 shadow-lg relative overflow-hidden backdrop-blur-md hover:border-emerald-500/30 transition-all">
-          <div className="flex items-center gap-2 mb-2">
-            <Flame className="w-4 h-4 text-amber-400" />
-            <h3 className="font-mono text-xs uppercase tracking-wider font-bold text-gray-200">
+        <div className="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs hover:border-emerald-400 transition-all">
+          <div className="flex items-center gap-2 mb-1.5">
+            <Flame className="w-4 h-4 text-amber-500" />
+            <h3 className="font-mono text-xs uppercase tracking-wider font-bold text-slate-800">
               Minimal Safe Patch Strategy
             </h3>
           </div>
-          <p className="text-xs font-mono text-gray-300 leading-relaxed">
-            Insert a minimal parameter check <code className="text-emerald-300 bg-slate-950 px-1 py-0.5 rounded border border-emerald-500/20">if b == 0: raise ValueError(...)</code>. Preserve all caller signatures and execution contracts across dependent modules.
+          <p className="text-xs font-mono text-slate-600 leading-relaxed">
+            Insert a minimal parameter check <code className="text-emerald-700 bg-emerald-50 px-1 py-0.5 rounded border border-emerald-200 font-semibold">if b == 0: raise ValueError(...)</code>. Preserve all caller signatures and execution contracts across dependent modules.
           </p>
         </div>
       </div>
 
       {/* Supporting Evidence Ledger List */}
       <div className="flex-1">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xs font-mono font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+        <div className="flex items-center justify-between mb-2.5">
+          <h3 className="text-xs font-mono font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-cyan-600" />
             <span>Verifiable Evidence Ledger ({evidenceList.length})</span>
           </h3>
-          <span className="text-[10px] font-mono text-cyan-400/80 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-500/20">
+          <span className="text-[10px] font-mono text-cyan-800 bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200 font-medium">
             Rule: Zero Hallucinated Claims
           </span>
         </div>
 
-        <div className="space-y-2.5">
+        <div className="space-y-2">
           {evidenceList.map((evidence, idx) => (
             <div 
               key={evidence.id || idx} 
-              className="bg-slate-900/70 border border-white/[0.06] hover:border-cyan-500/30 rounded-xl p-3 hover:bg-slate-900/90 transition-all group backdrop-blur-sm"
+              className="bg-white border border-slate-200/90 hover:border-cyan-400 rounded-xl p-3 hover:shadow-xs transition-all group"
             >
               <div className="flex items-start gap-3">
-                <div className="mt-0.5 bg-slate-950 p-2 rounded-lg border border-white/[0.08] shrink-0 group-hover:border-cyan-500/30 transition-colors">
+                <div className="mt-0.5 bg-slate-50 p-2 rounded-lg border border-slate-200 shrink-0 group-hover:border-cyan-300 transition-colors">
                   {getIcon(evidence.type)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-xs text-white mb-1 font-mono tracking-tight">{evidence.claim}</div>
-                  <div className="text-xs text-gray-400 mb-2 font-mono leading-relaxed">{evidence.reason}</div>
+                  <div className="font-semibold text-xs text-slate-900 mb-0.5 font-mono tracking-tight">{evidence.claim}</div>
+                  <div className="text-xs text-slate-500 mb-2 font-mono leading-relaxed">{evidence.reason}</div>
                   
                   {evidence.filePath && (
-                    <div className="flex items-center gap-1.5 text-[11px] font-mono text-gray-400 bg-slate-950/80 px-2 py-1 rounded-md border border-white/[0.06] w-fit">
-                      <span className="text-cyan-400">{evidence.filePath}</span>
-                      {evidence.lines && <span className="text-gray-500">:{evidence.lines.join('-')}</span>}
+                    <div className="flex items-center gap-1.5 text-[11px] font-mono text-slate-600 bg-slate-50 px-2 py-1 rounded-md border border-slate-200 w-fit">
+                      <span className="text-cyan-700 font-medium">{evidence.filePath}</span>
+                      {evidence.lines && <span className="text-slate-400">:{evidence.lines.join('-')}</span>}
                       {evidence.symbol && (
-                        <span className="text-purple-300 border-l border-white/[0.1] pl-1.5 ml-1 font-semibold">
+                        <span className="text-purple-700 border-l border-slate-200 pl-1.5 ml-1 font-semibold">
                           {evidence.symbol}()
                         </span>
                       )}
                     </div>
                   )}
                 </div>
-                <div className="text-[9px] uppercase font-mono font-bold text-cyan-300 bg-cyan-950/80 border border-cyan-500/20 px-2 py-0.5 rounded shrink-0">
+                <div className="text-[9px] uppercase font-mono font-bold text-cyan-700 bg-cyan-50 border border-cyan-200 px-2 py-0.5 rounded shrink-0">
                   {String(evidence.type).replace('_', ' ')}
                 </div>
               </div>

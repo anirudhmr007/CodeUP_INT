@@ -34,23 +34,23 @@ export default function AntigravityCursor() {
       mousePos.current = { x: e.clientX, y: e.clientY };
       if (!isVisible) setIsVisible(true);
 
-      // Add a stardust trail particle
-      if (Math.random() > 0.3) {
+      // Add high-visibility stardust trail particles (tuned for light background)
+      if (Math.random() > 0.25) {
         const colors = [
-          'rgba(56, 189, 248, ', // sky
-          'rgba(168, 85, 247, ', // purple
-          'rgba(99, 102, 241, ', // indigo
-          'rgba(52, 211, 153, ', // emerald
+          'rgba(2, 132, 199, ',   // Deep Sky / Cyan
+          'rgba(79, 70, 229, ',   // Indigo
+          'rgba(147, 51, 234, ',  // Purple
+          'rgba(13, 148, 136, ',  // Teal
         ];
         const selectedColor = colors[Math.floor(Math.random() * colors.length)];
         particles.current.push({
           x: e.clientX,
           y: e.clientY,
-          size: Math.random() * 3 + 1.5,
-          alpha: 0.8,
+          size: Math.random() * 3.5 + 1.5,
+          alpha: 0.9,
           color: selectedColor,
-          vx: (Math.random() - 0.5) * 0.8,
-          vy: (Math.random() - 0.5) * 0.8 - 0.3, // slight upward anti-gravity drift
+          vx: (Math.random() - 0.5) * 0.9,
+          vy: (Math.random() - 0.5) * 0.9 - 0.35, // upward antigravity buoyancy
         });
       }
     };
@@ -101,7 +101,7 @@ export default function AntigravityCursor() {
     // Main animation loop
     const render = () => {
       // Smooth lerp for trailing aura (fluid inertia)
-      const ease = 0.18;
+      const ease = 0.2;
       trailPos.current.x += (mousePos.current.x - trailPos.current.x) * ease;
       trailPos.current.y += (mousePos.current.y - trailPos.current.y) * ease;
 
@@ -123,7 +123,7 @@ export default function AntigravityCursor() {
             const p = particles.current[i];
             p.x += p.vx;
             p.y += p.vy;
-            p.alpha -= 0.025;
+            p.alpha -= 0.022;
             p.size *= 0.96;
 
             if (p.alpha <= 0 || p.size <= 0.2) {
@@ -134,8 +134,8 @@ export default function AntigravityCursor() {
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             ctx.fillStyle = `${p.color}${p.alpha})`;
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = `${p.color}0.8)`;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = `${p.color}0.7)`;
             ctx.fill();
           }
         }
@@ -163,22 +163,21 @@ export default function AntigravityCursor() {
       <canvas
         ref={canvasRef}
         className="pointer-events-none fixed inset-0 z-[9998]"
-        style={{ mixBlendMode: 'screen' }}
       />
 
       {/* Main sharp focal pointer dot */}
       <div
         ref={cursorDotRef}
-        className={`pointer-events-none fixed -top-1.5 -left-1.5 z-[9999] h-3 w-3 rounded-full transition-opacity duration-300 ${
+        className={`pointer-events-none fixed -top-1.5 -left-1.5 z-[9999] h-3.5 w-3.5 rounded-full transition-opacity duration-300 ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
         style={{
           background: isHovered
-            ? 'radial-gradient(circle, #38bdf8 0%, #a855f7 100%)'
-            : '#38bdf8',
+            ? 'radial-gradient(circle, #0284c7 0%, #7c3aed 100%)'
+            : '#0284c7',
           boxShadow: isHovered
-            ? '0 0 12px #38bdf8, 0 0 20px #a855f7'
-            : '0 0 8px #38bdf8',
+            ? '0 0 14px #0284c7, 0 0 22px rgba(124, 58, 237, 0.7)'
+            : '0 0 10px rgba(2, 132, 199, 0.8)',
           transform: 'translate3d(-100px, -100px, 0)',
           willChange: 'transform',
         }}
@@ -191,19 +190,18 @@ export default function AntigravityCursor() {
           isVisible ? 'opacity-100' : 'opacity-0'
         } ${
           isHovered
-            ? '-top-6 -left-6 h-12 w-12 border-cyan-400/80 bg-cyan-400/10 shadow-[0_0_25px_rgba(56,189,248,0.4)] scale-125'
-            : '-top-4 -left-4 h-8 w-8 border-violet-400/40 bg-violet-500/5 shadow-[0_0_15px_rgba(168,85,247,0.25)]'
-        } ${isClicked ? 'scale-75 border-emerald-400 bg-emerald-400/20' : ''}`}
+            ? '-top-6 -left-6 h-12 w-12 border-cyan-500 bg-cyan-500/20 shadow-[0_0_25px_rgba(6,182,212,0.4)] scale-125'
+            : '-top-4 -left-4 h-8 w-8 border-cyan-600/50 bg-cyan-500/10 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
+        } ${isClicked ? 'scale-75 border-indigo-600 bg-indigo-500/30' : ''}`}
         style={{
           transform: 'translate3d(-100px, -100px, 0)',
           willChange: 'transform',
-          backdropFilter: isHovered ? 'blur(1px)' : 'none',
         }}
       >
-        {/* Antigravity orbital ring notch */}
+        {/* Antigravity orbital notch */}
         <div
           className={`absolute -top-1 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full transition-colors ${
-            isHovered ? 'bg-cyan-300 animate-spin' : 'bg-violet-400/60'
+            isHovered ? 'bg-cyan-500 animate-spin' : 'bg-cyan-600'
           }`}
         />
       </div>

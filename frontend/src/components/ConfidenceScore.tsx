@@ -3,17 +3,17 @@ import { Sparkles, ShieldCheck } from 'lucide-react';
 
 export default function ConfidenceScore({ score = 94 }: { score?: number }) {
   const getScoreColor = () => {
-    if (score >= 90) return 'text-cyan-400';
-    if (score >= 75) return 'text-sky-300';
-    if (score >= 50) return 'text-amber-400';
-    return 'text-rose-400';
+    if (score >= 90) return 'text-cyan-700';
+    if (score >= 75) return 'text-sky-600';
+    if (score >= 50) return 'text-amber-600';
+    return 'text-rose-600';
   };
 
   const getStrokeGradient = () => {
-    if (score >= 90) return 'url(#cyan-glow)';
-    if (score >= 75) return '#38bdf8';
-    if (score >= 50) return '#fbbf24';
-    return '#f43f5e';
+    if (score >= 90) return 'url(#cyan-glow-light)';
+    if (score >= 75) return '#0284c7';
+    if (score >= 50) return '#d97706';
+    return '#e11d48';
   };
 
   const getLabel = () => {
@@ -28,13 +28,13 @@ export default function ConfidenceScore({ score = 94 }: { score?: number }) {
   const strokeDashoffset = circumference - (score / 100) * circumference;
 
   return (
-    <div className="flex items-center gap-3 bg-slate-900/90 backdrop-blur-xl px-3 py-1.5 rounded-xl border border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+    <div className="flex items-center gap-3 bg-white/90 backdrop-blur-xl px-3 py-1.5 rounded-xl border border-slate-200/90 shadow-sm">
       <div className="relative w-14 h-14 flex items-center justify-center shrink-0">
         <svg className="w-full h-full transform -rotate-90 absolute" viewBox="0 0 64 64">
           <defs>
-            <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#38bdf8" />
-              <stop offset="100%" stopColor="#818cf8" />
+            <linearGradient id="cyan-glow-light" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#06b6d4" />
+              <stop offset="100%" stopColor="#3b82f6" />
             </linearGradient>
           </defs>
           {/* Base track */}
@@ -42,7 +42,7 @@ export default function ConfidenceScore({ score = 94 }: { score?: number }) {
             cx="32"
             cy="32"
             r={radius}
-            className="stroke-slate-800"
+            className="stroke-slate-100"
             strokeWidth="5"
             fill="transparent"
           />
@@ -60,7 +60,7 @@ export default function ConfidenceScore({ score = 94 }: { score?: number }) {
             strokeLinecap="round"
           />
         </svg>
-        <div className={`text-lg font-black font-mono ${getScoreColor()} z-10 drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]`}>
+        <div className={`text-lg font-black font-mono ${getScoreColor()} z-10`}>
           {score}
         </div>
       </div>
@@ -70,20 +70,20 @@ export default function ConfidenceScore({ score = 94 }: { score?: number }) {
           <span className={`text-[10px] font-black uppercase tracking-wider ${getScoreColor()}`}>
             {getLabel()}
           </span>
-          <Sparkles className="w-3 h-3 text-cyan-300 animate-pulse" />
+          <Sparkles className="w-3 h-3 text-cyan-600 animate-pulse" />
         </div>
-        <div className="text-[9px] text-gray-400 grid grid-cols-2 gap-x-2.5 gap-y-0.5 mt-0.5">
+        <div className="text-[9px] text-slate-500 grid grid-cols-2 gap-x-2.5 gap-y-0.5 mt-0.5">
           <div className="flex justify-between gap-1">
-            <span className="text-gray-500">Tests:</span> <span className="text-cyan-300 font-semibold">+20</span>
+            <span className="text-slate-400">Tests:</span> <span className="text-cyan-700 font-bold">+20</span>
           </div>
           <div className="flex justify-between gap-1">
-            <span className="text-gray-500">AST:</span> <span className="text-emerald-300 font-semibold">+20</span>
+            <span className="text-slate-400">AST:</span> <span className="text-emerald-700 font-bold">+20</span>
           </div>
           <div className="flex justify-between gap-1">
-            <span className="text-gray-500">Impact:</span> <span className="text-purple-300 font-semibold">+15</span>
+            <span className="text-slate-400">Impact:</span> <span className="text-purple-700 font-bold">+15</span>
           </div>
           <div className="flex justify-between gap-1">
-            <span className="text-gray-500">Safety:</span> <span className="text-sky-300 font-semibold">+10</span>
+            <span className="text-slate-400">Safety:</span> <span className="text-sky-700 font-bold">+10</span>
           </div>
         </div>
       </div>

@@ -1,73 +1,100 @@
 import React from 'react';
-import { Download, Check, ExternalLink, ShieldCheck } from 'lucide-react';
+import { Download, Check, ExternalLink, ShieldCheck, Sparkles, GitMerge, FileCode, Cpu } from 'lucide-react';
+import { useStore } from '../hooks/useStore';
 
 export default function FinalReport() {
+  const { currentTaskId, currentRepo } = useStore();
+
   return (
-    <div className="h-full bg-gray-950 p-6 overflow-auto">
-      <div className="max-w-4xl mx-auto space-y-8 pb-12">
+    <div className="h-full bg-slate-950/70 p-6 overflow-y-auto">
+      <div className="max-w-4xl mx-auto space-y-6 pb-12 font-sans">
         
-        {/* Header */}
-        <div className="border-b border-gray-800 pb-6 flex justify-between items-start">
+        {/* Antigravity Mission Report Header */}
+        <div className="border-b border-white/[0.08] pb-5 flex flex-col md:flex-row justify-between items-start gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-100 mb-2">Autonomous Repair Report</h1>
-            <div className="text-sm text-gray-400 font-mono">
-              Task ID: tk_8f92a1b4 • Generated: {new Date().toLocaleString()}
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-[10px] font-mono tracking-widest uppercase bg-cyan-950 text-cyan-400 border border-cyan-500/30 px-2 py-0.5 rounded">
+                EVIDENCE CERTIFICATE
+              </span>
+              <span className="text-xs font-mono text-gray-500">
+                Task ID: {currentTaskId || 'repoguard_live'}
+              </span>
+            </div>
+            <h1 className="text-xl font-bold font-mono text-white tracking-wide flex items-center gap-2">
+              Autonomous Verification Dossier
+            </h1>
+            <div className="text-xs text-gray-400 font-mono mt-0.5">
+              Repository: {currentRepo?.name || 'sample-calculator'} • Grounding: 100% AST & Test Proof
             </div>
           </div>
-          <div className="flex gap-2">
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 text-sm rounded-md transition-colors border border-gray-700">
-              <Download className="w-4 h-4" /> Export PDF
+          <div className="flex gap-2 font-mono text-xs">
+            <button 
+              onClick={() => window.print()}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-gray-200 rounded-lg transition-colors border border-white/[0.08]"
+            >
+              <Download className="w-3.5 h-3.5 text-cyan-400" /> Export PDF
             </button>
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded-md transition-colors shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-              <GitMerge className="w-4 h-4" /> Create PR
+            <button className="flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+              <GitMerge className="w-3.5 h-3.5" /> Submit Patch PR
             </button>
           </div>
         </div>
 
         {/* Executive Summary */}
-        <section className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-200 flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-green-500" /> Executive Summary
+        <section className="space-y-3">
+          <h2 className="text-xs uppercase font-mono font-bold text-gray-300 flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" /> Executive Safety Summary
           </h2>
-          <div className="bg-gray-900 border border-gray-800 rounded-lg p-5 text-gray-300 text-sm leading-relaxed">
-            <p className="mb-3">
-              RepoGuard AI successfully diagnosed and resolved a high-severity race condition in the <code className="bg-gray-800 text-blue-300 px-1 rounded">SessionManager</code> component. 
+          <div className="bg-slate-900/80 border border-white/[0.08] rounded-xl p-4 text-gray-300 text-xs font-mono leading-relaxed shadow-lg backdrop-blur-md">
+            <p className="mb-2">
+              RepoGuard AI successfully detected, localized, and repaired the zero-division vulnerability in <code className="text-cyan-300 bg-slate-950 px-1 py-0.5 rounded border border-cyan-500/20">Calculator.divide()</code>.
             </p>
-            <p>
-              The issue occurred during concurrent session creation when the system approached the maximum session limit, leading to map size violations and potential memory leaks. A Mutex locking mechanism was introduced to ensure atomic check-then-act operations. The fix was verified against existing regression suites and a newly synthesized high-concurrency load test.
+            <p className="text-gray-400">
+              The change was synthesized under the <strong className="text-white">Minimal Patch Optimizer</strong> (cost score: 4/100). All existing arithmetic test fixtures passed baseline verification with 0 regressions, and a synthesized counterfactual regression test proved that zero-division now raises an explicit <code className="text-cyan-300">ValueError</code> rather than terminating the process with an unhandled runtime crash.
             </p>
           </div>
         </section>
 
-        {/* Changes Summary */}
-        <section className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-200">Files Modified</h2>
-          <div className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
-            <table className="w-full text-sm text-left">
-              <thead className="bg-gray-800/50 text-gray-400 text-xs uppercase">
+        {/* Files Modified Table */}
+        <section className="space-y-3">
+          <h2 className="text-xs uppercase font-mono font-bold text-gray-300 flex items-center gap-2">
+            <FileCode className="w-4 h-4 text-cyan-400" /> Changes Applied
+          </h2>
+          <div className="bg-slate-900/80 border border-white/[0.08] rounded-xl overflow-hidden shadow-lg">
+            <table className="w-full text-xs font-mono text-left">
+              <thead className="bg-slate-950/80 text-gray-400 text-[10px] uppercase border-b border-white/[0.06]">
                 <tr>
-                  <th className="px-4 py-3 font-medium">File</th>
-                  <th className="px-4 py-3 font-medium">Action</th>
-                  <th className="px-4 py-3 font-medium">Stats</th>
+                  <th className="px-4 py-2.5 font-semibold">Source File</th>
+                  <th className="px-4 py-2.5 font-semibold">Change Type</th>
+                  <th className="px-4 py-2.5 font-semibold">Lines</th>
+                  <th className="px-4 py-2.5 font-semibold">Safety Impact</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-800">
-                <tr className="hover:bg-gray-800/50">
-                  <td className="px-4 py-3 font-mono text-gray-300 flex items-center gap-2">
-                    <ExternalLink className="w-3 h-3 text-gray-500" /> src/auth/SessionManager.ts
+              <tbody className="divide-y divide-white/[0.04]">
+                <tr className="hover:bg-slate-800/40">
+                  <td className="px-4 py-2.5 text-gray-200 flex items-center gap-2">
+                    <FileCode className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                    <span>calculator/core.py</span>
                   </td>
-                  <td className="px-4 py-3 text-yellow-400">Modified</td>
-                  <td className="px-4 py-3 font-mono text-xs">
-                    <span className="text-green-400">+6</span> <span className="text-red-400">-4</span>
+                  <td className="px-4 py-2.5 text-amber-400">Minimal Guard</td>
+                  <td className="px-4 py-2.5 text-xs">
+                    <span className="text-emerald-400">+3</span> <span className="text-rose-400">-1</span>
+                  </td>
+                  <td className="px-4 py-2.5 text-emerald-400 flex items-center gap-1">
+                    <Check className="w-3 h-3" /> Safe
                   </td>
                 </tr>
-                <tr className="hover:bg-gray-800/50">
-                  <td className="px-4 py-3 font-mono text-gray-300 flex items-center gap-2">
-                    <ExternalLink className="w-3 h-3 text-gray-500" /> package.json
+                <tr className="hover:bg-slate-800/40">
+                  <td className="px-4 py-2.5 text-gray-200 flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                    <span>tests/test_repoguard_regression.py</span>
                   </td>
-                  <td className="px-4 py-3 text-yellow-400">Modified</td>
-                  <td className="px-4 py-3 font-mono text-xs">
-                    <span className="text-green-400">+1</span> <span className="text-red-400">-0</span>
+                  <td className="px-4 py-2.5 text-cyan-400">Synthesized Test</td>
+                  <td className="px-4 py-2.5 text-xs">
+                    <span className="text-emerald-400">+44</span> <span className="text-gray-500">-0</span>
+                  </td>
+                  <td className="px-4 py-2.5 text-emerald-400 flex items-center gap-1">
+                    <Check className="w-3 h-3" /> Verifier
                   </td>
                 </tr>
               </tbody>
@@ -75,35 +102,37 @@ export default function FinalReport() {
           </div>
         </section>
 
-        {/* Verification */}
-        <section className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-200">Verification & Safety</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
-              <h3 className="font-medium text-gray-300 mb-3 text-sm">Testing Pipeline</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-500" /> Synthesized test generated
+        {/* Verification Grid */}
+        <section className="space-y-3">
+          <h2 className="text-xs uppercase font-mono font-bold text-gray-300 flex items-center gap-2">
+            <Cpu className="w-4 h-4 text-purple-400" /> Multi-Layer Change Verification
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            <div className="bg-slate-900/80 border border-white/[0.08] rounded-xl p-3.5">
+              <h3 className="font-mono text-xs font-bold text-cyan-300 mb-2">1. Regression Shield</h3>
+              <ul className="space-y-1.5 text-xs font-mono text-gray-400">
+                <li className="flex items-center gap-2 text-emerald-400">
+                  <Check className="w-3.5 h-3.5" /> 12/12 Baseline unit tests passed
                 </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-500" /> Synthesized test passed (500 ops/s)
+                <li className="flex items-center gap-2 text-emerald-400">
+                  <Check className="w-3.5 h-3.5" /> Counterfactual regression test passed
                 </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-500" /> Baseline regression tests passed
+                <li className="flex items-center gap-2 text-emerald-400">
+                  <Check className="w-3.5 h-3.5" /> Zero unintended behavioral regressions
                 </li>
               </ul>
             </div>
-            <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
-              <h3 className="font-medium text-gray-300 mb-3 text-sm">Static Analysis</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-500" /> Type checking passed
+            <div className="bg-slate-900/80 border border-white/[0.08] rounded-xl p-3.5">
+              <h3 className="font-mono text-xs font-bold text-purple-300 mb-2">2. API Reality Guard</h3>
+              <ul className="space-y-1.5 text-xs font-mono text-gray-400">
+                <li className="flex items-center gap-2 text-emerald-400">
+                  <Check className="w-3.5 h-3.5" /> Zero invented APIs or phantom imports
                 </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-500" /> Linting rules satisfied
+                <li className="flex items-center gap-2 text-emerald-400">
+                  <Check className="w-3.5 h-3.5" /> Public method signatures preserved
                 </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-500" /> No indirect impact violations
+                <li className="flex items-center gap-2 text-emerald-400">
+                  <Check className="w-3.5 h-3.5" /> Upstream caller dependencies intact
                 </li>
               </ul>
             </div>
@@ -114,12 +143,3 @@ export default function FinalReport() {
     </div>
   );
 }
-
-// Simple local mock for GitMerge icon if not available from lucide
-const GitMerge = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="18" cy="18" r="3"></circle>
-    <circle cx="6" cy="6" r="3"></circle>
-    <path d="M6 21V9a9 9 0 0 0 9 9"></path>
-  </svg>
-);
